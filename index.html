@@ -1,1 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ledger &amp; Learn — CF &amp; IFRS 18 Practice</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#132a4c;
+  --navy-2:#1c3a63;
+  --cream:#f6f1e4;
+  --paper:#fffdf8;
+  --gold:#c99a3e;
+  --gold-2:#e3b855;
+  --red:#8c3232;
+  --green:#2f5d3a;
+  --line:#ddd0ac;
+  --text:#26241f;
+  --muted:#6f6656;
+  --radius:2px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background-color:var(--cream);
+  background-image:
+    repeating-linear-gradient(to bottom, transparent, transparent 34px, rgba(19,42,76,.05) 35px),
+    linear-gradient(90deg, transparent 0, transparent 0);
+  font-family:'Inter', sans-serif;
+  color:var(--text);
+  min-height:100vh;
+}
+.app-shell{max-width:900px;margin:0 auto;padding:0 20px 80px;}
+a{color:inherit;}
 
+/* topbar */
+.topbar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:22px 0 18px; gap:16px; flex-wrap:wrap;
+  border-bottom:2px solid var(--navy);
+}
+.brand{display:flex; align-items:center; gap:12px;}
+.brand-mark{
+  width:42px; height:42px; border:2px solid var(--navy); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Fraunces', serif; font-weight:700; font-size:20px; color:var(--navy);
+  flex-shrink:0; background:var(--paper);
+}
+.brand h1{font-family:'Fraunces', serif; font-weight:700; font-size:24px; margin:0; letter-spacing:-.01em; color:var(--navy);}
+.brand p{margin:2px 0 0; font-size:12.5px; color:var(--muted); font-family:'IBM Plex Mono', monospace; letter-spacing:.02em;}
+
+/* T-account tally */
+.tacct{
+  display:flex; border:1.5px solid var(--navy); background:var(--paper);
+  font-family:'IBM Plex Mono', monospace; border-radius:var(--radius);
+  box-shadow:0 2px 0 var(--line);
+}
+.tacct .col{padding:8px 16px; min-width:64px; text-align:center; line-height:1.15;}
+.tacct .col.debit{border-right:1.5px solid var(--navy); color:var(--green); font-weight:600; font-size:18px;}
+.tacct .col.credit{color:var(--red); font-weight:600; font-size:18px;}
+.tacct .label{display:block; font-size:9.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); font-weight:400; margin-bottom:2px;}
+.tacct.big{margin:22px 0; align-self:flex-start;}
+.tacct.big .col{padding:14px 30px;}
+.tacct.big .col.debit,.tacct.big .col.credit{font-size:30px;}
+
+/* generic */
+.eyebrow{
+  font-family:'IBM Plex Mono', monospace; font-size:12px; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--gold); margin:28px 0 6px; font-weight:600;
+}
+h2{font-family:'Fraunces', serif; font-weight:600; font-size:28px; margin:0 0 10px; color:var(--navy);}
+.lede{color:var(--muted); max-width:56ch; line-height:1.55; margin:0 0 26px;}
+
+/* setup screen */
+.control-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px 18px; margin-bottom:8px;}
+.control{display:flex; flex-direction:column; gap:6px; font-size:13px; color:var(--navy); font-weight:600;}
+.control select{
+  font-family:'Inter', sans-serif; font-size:15px; padding:11px 12px; border:1.5px solid var(--line);
+  background:var(--paper); border-radius:var(--radius); color:var(--text); appearance:none;
+  background-image:linear-gradient(45deg, transparent 50%, var(--navy) 50%), linear-gradient(135deg, var(--navy) 50%, transparent 50%);
+  background-position: calc(100% - 18px) center, calc(100% - 13px) center; background-size:5px 5px; background-repeat:no-repeat;
+}
+.control select:focus{outline:2px solid var(--gold); outline-offset:1px;}
+.switch-control{justify-content:flex-end;}
+.switch{
+  font-family:'IBM Plex Mono', monospace; font-size:14px; padding:10px 18px; border:1.5px solid var(--navy);
+  background:var(--paper); color:var(--navy); border-radius:var(--radius); cursor:pointer; width:fit-content;
+}
+.switch.on{background:var(--navy); color:var(--paper);}
+.switch:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+.count-line{font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--muted); margin:14px 0 26px;}
+
+.cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:8px;}
+.btn{
+  font-family:'Inter', sans-serif; font-weight:600; font-size:15px; padding:13px 26px;
+  border-radius:var(--radius); cursor:pointer; border:1.5px solid var(--navy); transition:transform .08s ease;
+}
+.btn:active{transform:translateY(1px);}
+.btn:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+.btn-primary{background:var(--navy); color:var(--paper);}
+.btn-primary:hover{background:var(--navy-2);}
+.btn-primary:disabled{opacity:.4; cursor:not-allowed;}
+.btn-ghost{background:transparent; color:var(--navy);}
+.btn-ghost:hover{background:rgba(19,42,76,.06);}
+
+/* quiz screen */
+.progress-row{display:flex; align-items:center; gap:14px; margin:26px 0 20px;}
+.progress-label{font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--muted); white-space:nowrap;}
+.progress-bar{flex:1; height:6px; background:var(--line); border-radius:3px; overflow:hidden;}
+.progress-fill{height:100%; background:var(--gold); transition:width .25s ease;}
+
+.question-card{
+  background:var(--paper); border:1px solid var(--line); border-left:4px solid var(--red);
+  padding:30px 30px 30px 40px; position:relative; box-shadow:0 2px 0 var(--line), 0 16px 30px -22px rgba(19,42,76,.45);
+  animation:cardIn .28s ease;
+}
+@keyframes cardIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+.q-tag{
+  font-family:'IBM Plex Mono', monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.07em;
+  color:var(--gold); font-weight:600; margin-bottom:14px;
+}
+.ledger-sheet{
+  font-family:'IBM Plex Mono', monospace; font-size:13px; line-height:1.65; white-space:pre-wrap;
+  background:rgba(19,42,76,.035); border:1px solid var(--line); border-radius:var(--radius);
+  padding:16px 18px; margin:0 0 20px; color:#3b3626;
+}
+.q-prompt{font-family:'Fraunces', serif; font-weight:600; font-size:19px; line-height:1.4; margin:0 0 22px; color:var(--text); white-space:pre-wrap;}
+
+.options{display:flex; flex-direction:column; gap:10px;}
+.opt{
+  display:flex; align-items:center; gap:14px; text-align:left; padding:13px 16px;
+  border:1.5px solid var(--line); background:var(--paper); border-radius:var(--radius);
+  font-family:'Inter', sans-serif; font-size:15px; cursor:pointer; color:var(--text);
+}
+.opt:hover:not(:disabled){border-color:var(--navy);}
+.opt:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+.opt:disabled{cursor:default;}
+.opt-letter{
+  font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:13px; width:26px; height:26px; flex-shrink:0;
+  border:1.5px solid var(--navy); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--navy);
+}
+.opt.correct{border-color:var(--green); background:rgba(47,93,58,.08);}
+.opt.correct .opt-letter{background:var(--green); border-color:var(--green); color:#fff;}
+.opt.wrong{border-color:var(--red); background:rgba(140,50,50,.08);}
+.opt.wrong .opt-letter{background:var(--red); border-color:var(--red); color:#fff;}
+
+.num-row{display:flex; gap:10px; flex-wrap:wrap;}
+.num-row input{
+  flex:1; min-width:180px; font-family:'IBM Plex Mono', monospace; font-size:16px; padding:12px 14px;
+  border:1.5px solid var(--line); border-radius:var(--radius); background:var(--paper); color:var(--text);
+}
+.num-row input:focus{outline:2px solid var(--gold); outline-offset:1px; border-color:var(--navy);}
+.num-row input:disabled{background:#f2ede0;}
+
+.feedback{margin-top:18px;}
+.fb{padding:14px 16px; border-radius:var(--radius); border:1.5px solid; font-size:14.5px; line-height:1.55;}
+.fb strong{display:block; margin-bottom:4px; font-family:'Fraunces', serif; font-size:15.5px;}
+.fb p{margin:4px 0 0;}
+.fb-correct{border-color:var(--green); background:rgba(47,93,58,.07); color:#1e3d26;}
+.fb-wrong{border-color:var(--red); background:rgba(140,50,50,.07); color:#5e2222;}
+.fb-info{border-color:var(--gold); background:rgba(201,154,62,.1); color:#4a3a14;}
+.fb-explain{color:var(--muted); font-style:italic;}
+
+.actions{display:flex; align-items:center; gap:12px; margin-top:20px; flex-wrap:wrap;}
+.self-grade-label{font-size:13.5px; color:var(--muted); font-weight:600; margin-right:2px;}
+
+/* results */
+.results{padding-bottom:20px;}
+.score-line{font-family:'IBM Plex Mono', monospace; font-size:14px; color:var(--muted); margin:0 0 10px;}
+.missed{margin-top:30px; border-top:2px solid var(--navy); padding-top:22px;}
+.missed h3{font-family:'Fraunces', serif; font-size:20px; color:var(--navy); margin:0 0 16px;}
+.missed-item{
+  background:var(--paper); border:1px solid var(--line); border-left:4px solid var(--gold);
+  padding:16px 18px; border-radius:var(--radius); margin-bottom:14px;
+}
+.missed-prompt{font-weight:600; margin:6px 0 8px; font-size:15px;}
+.missed-your{color:var(--red); font-size:13.5px; margin:2px 0;}
+.missed-correct{color:var(--green); font-size:13.5px; margin:2px 0; font-weight:600;}
+.missed-explain{color:var(--muted); font-size:13.5px; font-style:italic; margin:8px 0 0;}
+
+footer.foot{
+  margin-top:50px; padding-top:18px; border-top:1px solid var(--line);
+  font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--muted); text-align:center;
+}
+
+@media (max-width:640px){
+  .control-grid{grid-template-columns:1fr;}
+  .switch-control{justify-content:flex-start;}
+  .topbar{flex-direction:column; align-items:flex-start;}
+  .question-card{padding:22px 18px 22px 26px;}
+  h2{font-size:23px;}
+}
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">§</div>
+      <div>
+        <h1>Ledger &amp; Learn</h1>
+        <p>Conceptual Framework · IFRS 18 practice bank</p>
+      </div>
+    </div>
+    <div class="tacct" id="tally" style="visibility:hidden;"></div>
+  </header>
+  <main id="view"></main>
+  <footer class="foot">135 questions adapted from the Accounting Pool (DLSU–Manila) review packs, for personal practice.</footer>
+</div>
+
+<script>
+const FIELDS = ['id','topic','section','num','type','context','prompt','options','answer','explain'];
+
+const RAW = [
+[1,'CF','Objective & Purpose','1','tf',null,`General purpose financial reports report financial information only.`,[`True`,`False`],1,`Reports also reflect changes in assets and liabilities caused by non-financial factors, so "financial information only" is too narrow.`],
+[2,'CF','Objective & Purpose','2','tf',null,`The IASB creates both International Accounting Standards and International Financial Reporting Standards.`,[`True`,`False`],1,`The IASB only creates IFRS. International Accounting Standards (IAS) were issued by a predecessor standard-setting body.`],
+[3,'CF','Objective & Purpose','3','num',null,`Which of the following do general purpose financial reports report? (Answer 0 to 6)\n\nI. Assets\nII. Liabilities\nIII. Financial ratios\nIV. Changes in assets and liabilities\nV. Changes in equity\nVI. Accruals`,null,5,`Reports cover assets, liabilities, changes in assets/liabilities, changes in equity, and accrual-based performance. Financial ratios are derived by users from the data — they aren't reported directly.`],
+[4,'CF','Objective & Purpose','4','tf',null,`The objective of general purpose financial statements is the objective of the conceptual framework, and the conceptual framework is a good basis on how to create international financial reporting standards.`,[`True`,`False`],0,null],
+[5,'CF','Objective & Purpose','5','tf',null,`The conceptual framework is not a standard but it can override IFRSs in very specific cases.`,[`True`,`False`],1,`The framework never overrides an actual IFRS Accounting Standard — where there's a conflict, the specific standard wins.`],
+[6,'CF','Objective & Purpose','6','tf',null,`One decision the primary users of financial information make is whether or not they should issue debt securities to the entity.`,[`True`,`False`],0,`Lenders and other creditors decide whether to extend credit or purchase debt securities of the entity — that counts as a resource-providing decision.`],
+[7,'CF','Objective & Purpose','7','tf',null,`Economic resources and claims are synonymous to assets and liabilities.`,[`True`,`False`],0,null],
+[8,'CF','Objective & Purpose','8','tf',null,`Financial performance is recorded in the statement of comprehensive income.`,[`True`,`False`],0,null],
+[9,'CF','Objective & Purpose','9','tf',null,`General purpose financial statements show financial and non-financial information about an entity.`,[`True`,`False`],1,null],
+[10,'CF','Objective & Purpose','10','num',`A service-type business showed the following information regarding its financial state:\n\nPetty cash fund, Jan 1 — P15,000\nPetty cash fund, Dec 31 (net of vouchers of P7,000) — P8,000\nCash on hand, Jan 1 — P180,000\nCash on hand, Dec 31 — P500,000\nBonds payable, Jan 1 — P340,291\nBonds payable, Dec 31 — P367,515`,`What is the change in equity of the company?`,null,285776,`Change in assets (P508,000 − P195,000 = P313,000) minus change in liabilities (P367,515 − P340,291 = P27,224) = P285,776 increase.`],
+[11,'CF','Objective & Purpose','11','open',`A service-type business showed the following information regarding its financial state:\n\nPetty cash fund, Jan 1 — P15,000\nPetty cash fund, Dec 31 (net of vouchers of P7,000) — P8,000\nCash on hand, Jan 1 — P180,000\nCash on hand, Dec 31 — P500,000\nBonds payable, Jan 1 — P340,291\nBonds payable, Dec 31 — P367,515`,`What can you infer about the financial state of the company?`,null,null,`The company shows positive growth — both cash resources and equity increased year over year, even as bonds payable grew modestly.`],
+[12,'CF','Qualitative Characteristics','12','mc',null,`Which of the following is NOT an enhancing qualitative characteristic?`,[`Verifiability`,`Comparability`,`Timeliness`,`Materiality`],3,`Materiality is an entity-specific aspect of relevance (a fundamental characteristic), not one of the four enhancing characteristics (VCUT).`],
+[13,'CF','Qualitative Characteristics','13','mc',null,`Which of the following best demonstrates the importance of verifiability in financial reporting?`,[`Reporting expenses in the same period as revenues`,`Two independent auditors arriving at almost similar audit conclusions`,`Publishing financial reports within the fiscal quarter`,`Explaining financial terms in a language that could be understood`],1,null],
+[14,'CF','Qualitative Characteristics','14','mc',null,`Understandability is most supported when financial reports are:`,[`Long and detailed but with important footnotes`,`Filled with industry jargon to save paper`,`Standardized, concise, and written in clear terms`,`Focused solely on financial experts`],2,null],
+[15,'CF','Qualitative Characteristics','15','mc',null,`Which of the following situations best illustrates a violation of faithful representation?`,[`Financial statements prepared using differing accounting policies`,`Statements released after stakeholders need the information`,`Use of overly technical jargon without explanation`,`Lack of audit evidence due to slight auditor bias`],3,`The other choices are violations of comparability, timeliness, and understandability — enhancing characteristics, not faithful representation.`],
+[16,'CF','Qualitative Characteristics','16','mc',null,`Which of the following best supports timeliness without sacrificing verifiability?`,[`Releasing unreviewed figures`,`Issuing forecasts to speed up understandability of financial statements`,`Using technology to automate financial data processing`,`Waiting until the annual audit is complete to ensure data integrity`],2,null],
+[17,'CF','Qualitative Characteristics','17','mc',null,`Management presents earnings before interest, taxes, depreciation, and amortization (EBITDA) with clear definitions. This improves:`,[`Timeliness`,`Verifiability`,`Understandability`,`Comparability`],2,null],
+[18,'CF','Qualitative Characteristics','18','mc',null,`Which statement is TRUE regarding enhancing qualitative characteristics?`,[`They override fundamental qualitative characteristics.`,`They are only applicable to internal reports but sometimes external reports.`,`They improve usefulness without compromising relevance and faithful representation.`,`At least one characteristic is mandatory under all frameworks.`],2,null],
+[19,'CF','Qualitative Characteristics','19','mc',null,`Which of the following best describes relevance in financial reporting?`,[`Data that confirms prior forecasts only`,`Data that is neutral and free from error`,`Data that has the ability to influence decision-making`,`Data that is fully audited`],2,null],
+[20,'CF','Qualitative Characteristics','20','mc',null,`How does prudence relate to neutrality?`,[`Prudence encourages overstatement of expenses`,`Prudence requires selecting more conservative estimates`,`Prudence supports neutrality by preventing bias under uncertainty`,`Prudence sometimes overrides neutrality in decision-making`],2,null],
+[21,'CF','Qualitative Characteristics','21','num',null,`An inventory was purchased for P800,000 but its market value is P700,000. Due to prudence, how much is the inventory in the statement of financial position?`,null,700000,`Prudence favors the more cautious figure when there's uncertainty — here, the lower of cost and market value.`],
+[22,'CF','Qualitative Characteristics','22','mc',null,`A company includes disclosures for all key assumptions and judgments. This supports:`,[`Relevance only`,`Timeliness`,`Faithful representation (completeness)`,`Comparability`],2,null],
+[23,'CF','Qualitative Characteristics','23','mc',null,`Which statement is TRUE about the relationship between relevance and faithful representation?`,[`Information must be relevant even if not faithfully represented`,`Both characteristics must be present for information to be useful`,`Relevance is optional if faithful representation is achieved`,`They are mutually exclusive in some cases`],1,null],
+[24,'CF','Qualitative Characteristics','24','tf',null,`"Free from error" in faithful representation does not always mean free from errors.`,[`True`,`False`],0,`Estimates can still faithfully represent something even if imprecise, as long as the process was described clearly and applied without error.`],
+[25,'CF','Qualitative Characteristics','25','mc',null,`Company A uses a different depreciation method each year based on internal strategy, without clear explanation. Financial statements remain internally accurate but are difficult to compare year over year. What characteristics are being violated?`,[`Faithful Representation, Timeliness`,`Comparability, Understandability`,`Comparability, Faithful Representation`,`Relevance, Verifiability`],2,null],
+[26,'CF','Qualitative Characteristics','26','tf',null,`Consistency supports comparability.`,[`True`,`False`],0,null],
+[27,'CF','Qualitative Characteristics','27','tf',null,`Comparability supports consistency.`,[`True`,`False`],1,`It runs the other way — consistency (using the same methods period to period) is what helps statements become more comparable.`],
+[28,'CF','Qualitative Characteristics','28','mc',null,`Which of the following is NOT a component of faithful representation?`,[`Neutrality`,`Predictive value`,`Completeness`,`Free from error`],1,`Predictive value belongs to relevance, not faithful representation.`],
+[29,'CF','Financial Statements','29','tf',null,`General purpose financial statements are prepared with the assumption that a wide range of users, including potential investors, creditors, and regulators, will rely on them for economic decisions.`,[`True`,`False`],0,null],
+[30,'CF','Financial Statements','30','tf',null,`The statement of changes in equity and the statement of financial position are only required for consolidated financial reports, as they are optional in parent-only financial reports.`,[`True`,`False`],1,`Both statements are required regardless of whether the reports are consolidated or unconsolidated.`],
+[31,'CF','Financial Statements','31','mc',null,`Which of the following best distinguishes consolidated financial statements from unconsolidated ones?`,[`Consolidated financial statements reflect only the assets and liabilities of the parent company.`,`Consolidated financial statements include the combined financial performance and position of the parent and its subsidiaries as if they were one single entity.`,`Unconsolidated statements include notes from all subsidiaries, but exclude their balances.`,`Only unconsolidated financial statements are considered general-purpose.`],1,null],
+[32,'CF','Financial Statements','32','mc',null,`Which statement most accurately explains why financial statements are considered general purpose?`,[`They are used by tax authorities and creditors for legal compliance.`,`They detail technical information intended for internal management use to grow the business.`,`They aim to meet the common information needs of users who cannot demand customized reports.`,`They are mainly meant for investors.`],2,null],
+[33,'CF','Financial Statements','33','tf',null,`A reporting entity must always be a legally separate entity such as a corporation or a registered partnership.`,[`True`,`False`],1,`A reporting entity can also be part of an entity (like a single subsidiary) or more than one entity (a combined group), without being one legal entity.`],
+[34,'CF','Financial Statements','34','tf',null,`The reporting period of an entity is usually consistent.`,[`True`,`False`],0,null],
+[35,'CF','Elements of Financial Statements','35','mc',null,`A company enters into a 3-year lease agreement granting them the right to use office space. The lease gives them the exclusive right to occupy and modify the space within contract limits. They cannot sell the lease, but they control the access and benefits. Which of the following best supports that the lease is an asset?`,[`The lease is a legal right involving another party, so it is not an asset.`,`The lease gives the company potential to control a liability, thus offsetting obligations.`,`The company has a present right to direct the use of the space and derive benefits from it, so it is an asset.`,`The lease is not an asset because no physical property is owned.`],2,null],
+[36,'CF','Elements of Financial Statements','36','mc',null,`The right to use a production machine is classified as an asset. However, it also grants the right to repair, replace, and upgrade the machine at the entity's discretion. Based on the Conceptual Framework, which best describes this asset?`,[`It consists of several assets due to the multiple rights granted.`,`It is still treated as a single asset (unit of account) despite the multiple rights.`,`It must be classified as a liability due to upgrade obligations.`,`It should not be recognized until all rights are exercised.`],1,null],
+[37,'CF','Elements of Financial Statements','37','mc',null,`Which of the following events does NOT necessarily result in the recognition of a liability?`,[`Signing a purchase contract for inventory with delivery due next month`,`Receiving goods before payment`,`Legal ruling requiring damages to be paid`,`Customer payment received in advance for services`],0,`An unperformed contract like this is executory — no liability arises until at least one party performs.`],
+[38,'CF','Elements of Financial Statements','38','mc',null,`Which of the following transactions leads to income under the Conceptual Framework?`,[`Revaluation of an asset with no corresponding transaction`,`Issuing shares for cash`,`Receiving a customer deposit`,`Decrease in an obligation from debt forgiveness`],3,`Income is recognized when a liability's carrying amount decreases (here, from forgiveness) without a corresponding contribution from owners.`],
+[39,'CF','Elements of Financial Statements','39','mc',null,`Equity is defined as:`,[`The total value of shares held by investors`,`The total assets of the entity`,`The residual interest in the assets after deducting liabilities`,`A liability owed to shareholders`],2,null],
+[40,'CF','Elements of Financial Statements','40','mc',null,`Which scenario correctly demonstrates a unit of account concept?`,[`A cash register and its software are valued together because they function as a unit.`,`A truck and its license plate are valued separately due to different uses.`,`A single receivable is split into two line items.`,`Each share in a company is always treated as its own unit.`],0,null],
+[41,'CF','Elements of Financial Statements','41','mc',null,`Which best describes an obligation to transfer an economic resource that qualifies as a liability?`,[`An employee contract that starts next year`,`An agreement to consider future investment`,`A court judgment requiring payment within 30 days`,`An expression of intent to donate to charity`],2,null],
+[42,'CF','Elements of Financial Statements','42','mc',null,`Which of the following transactions causes no immediate change in income, expenses, assets, or liabilities?`,[`Prepaid rent for future use`,`Depreciation of machinery`,`Revaluation surplus recognized in equity`,`Payment of current period's utility bill`],2,`A revaluation surplus is recognized directly in equity (through OCI), bypassing profit or loss.`],
+[43,'CF','Elements of Financial Statements','43','mc',null,`Which of the following is not an element directly associated with financial position?`,[`Asset`,`Equity`,`Expense`,`Liability`],2,`Expense is an element of financial performance, not financial position.`],
+[44,'CF','Elements of Financial Statements','44','mc',null,`A right qualifies as an asset if:`,[`It must produce guaranteed future benefits`,`It may produce benefits and is under the entity's control`,`It is tangible and legally owned`,`It was acquired through exchange`],1,null],
+[45,'CF','Elements of Financial Statements','45','mc',null,`Which of the following scenarios describes an increase in equity without recognizing income?`,[`Selling products at a profit`,`Recording gain from fair value increase from a FVPL investment`,`Reissuing treasury shares`,`Receiving interest income`],2,`Reissuing treasury shares is a transaction with owners (an equity transaction), not income.`],
+[46,'CF','Elements of Financial Statements','46','mc',null,`Substance of contractual rights and obligations focuses on:`,[`Only legally enforceable rights`,`The appearance of contract terms`,`Economic substance over form`,`Recognition of hidden income`],2,null],
+[47,'CF','Elements of Financial Statements','47','mc',null,`An entity recognizes an obligation arising from environmental damage it caused during the reporting period, even though there is no legal regulation requiring restoration. Based on the framework, this is an example of:`,[`A legal liability`,`A contingent liability not recognized`,`A constructive obligation, thus a liability`,`An expense not yet incurred`],2,null],
+[48,'CF','Elements of Financial Statements','48','num',`TRALELO TRALALA CO. reported the following transactions:\n\n• Incorporated on January 1. Par value per ordinary share is P10; par value per preference share is P50.\n• Issued 20,000 ordinary shares to shareholders at P32 per share.\n• Issued 3,650 preference shares to shareholders at a total price of P1,000,000.\n• Bought equipment for P3,000,000.\n• Bought inventory of P7,000,000 on account.\n• Issued 5,650 ordinary shares to a shareholder in exchange for land with fair value of P80,000.\n• Paid 20% of the outstanding liability balance.\n• Sold 50% of the inventory for P8,000,000.\n• Issued 100 preference shares to a shareholder at a price of P280 per share.\n• Declared cash dividends of P1.5 per ordinary share.\n\n(Treat all share capital as legal capital and as part of net assets.)`,`How much is the total net assets of the company?`,null,6149525,null],
+[49,'CF','Elements of Financial Statements','49','num',`TRALELO TRALALA CO. reported the following transactions:\n\n• Incorporated on January 1. Par value per ordinary share is P10; par value per preference share is P50.\n• Issued 20,000 ordinary shares to shareholders at P32 per share.\n• Issued 3,650 preference shares to shareholders at a total price of P1,000,000.\n• Bought equipment for P3,000,000.\n• Bought inventory of P7,000,000 on account.\n• Issued 5,650 ordinary shares to a shareholder in exchange for land with fair value of P80,000.\n• Paid 20% of the outstanding liability balance.\n• Sold 50% of the inventory for P8,000,000.\n• Issued 100 preference shares to a shareholder at a price of P280 per share.\n• Declared cash dividends of P1.5 per ordinary share.\n\n(Treat all share capital as legal capital and as part of net assets.)`,`How much is the total equity claims (legal capital) of the company?`,null,500500,null],
+[50,'CF','Elements of Financial Statements','50','num',`TRALELO TRALALA CO. reported the following transactions:\n\n• Incorporated on January 1. Par value per ordinary share is P10; par value per preference share is P50.\n• Issued 20,000 ordinary shares to shareholders at P32 per share.\n• Issued 3,650 preference shares to shareholders at a total price of P1,000,000.\n• Bought equipment for P3,000,000.\n• Bought inventory of P7,000,000 on account.\n• Issued 5,650 ordinary shares to a shareholder in exchange for land with fair value of P80,000.\n• Paid 20% of the outstanding liability balance.\n• Sold 50% of the inventory for P8,000,000.\n• Issued 100 preference shares to a shareholder at a price of P280 per share.\n• Declared cash dividends of P1.5 per ordinary share.\n\n(Treat all share capital as legal capital and as part of net assets.)`,`How much is the total liabilities of the company?`,null,1400000,null],
+[51,'CF','Recognition & Derecognition','51','mc',null,`Recognition of income occurs when:`,[`An asset's carrying amount increases or a liability's carrying amount decreases`,`An asset's carrying amount decreases or a liability's carrying amount increases`,`Equity is issued or repurchased`,`A cash transaction takes place`],0,null],
+[52,'CF','Recognition & Derecognition','52','mc',null,`Expenses are recognized when:`,[`Assets increase or liabilities decrease`,`Assets decrease or liabilities increase`,`Equity increases`,`Cash is received`],1,null],
+[53,'CF','Recognition & Derecognition','53','mc',null,`Which of the following best describes the primary purpose of recognition in financial statements?`,[`To include all possible financial data`,`To incorporate assets, liabilities, income, and expenses only when they meet definition and measurement criteria`,`To delay income recognition until cash is received`,`To recognize liabilities if and only if the liability is certain to be received`],1,null],
+[54,'CF','Recognition & Derecognition','54','mc',null,`In what situation should an asset be derecognized?`,[`When the asset's fair value changes materially`,`When the entity no longer controls the asset`,`When the asset becomes 80% depreciated or more`,`When the asset is physically impaired`],1,null],
+[55,'CF','Recognition & Derecognition','55','tf',null,`Recognition places the asset or liability in the balance sheet.`,[`True`,`False`],0,null],
+[56,'CF','Recognition & Derecognition','56','mc',null,`Which of the following is true regarding measurement uncertainty in recognition?`,[`Recognition should occur only if faithful representation can be reasonably achieved`,`All assets must be recognized regardless of uncertainty`,`Measurement uncertainty is not a concern`,`Measurement uncertainty is not a concern for liabilities`],0,null],
+[57,'CF','Recognition & Derecognition','57','mc',null,`When is an increase in a liability recognized as an expense?`,[`When cash is about to be paid out`,`When the obligation is legally enforceable only`,`When the obligation is probable and measurable`,`When a contract is signed, regardless of payment timing`],2,null],
+[58,'CF','Recognition & Derecognition','58','mc',null,`Under which case might an entity not recognize an element in financial statements despite it meeting the definition of an asset or liability?`,[`Because it is not relevant to the users of financial statements`,`Because it cannot be reliably measured to provide faithful representation`,`Because the entity does not want to disclose unfavorable information`,`Because of the accrual basis`],1,null],
+[59,'CF','Recognition & Derecognition','59','mc',null,`What is the fundamental difference between recognition and disclosure?`,[`Recognition includes items in financial statements; disclosure provides additional details outside the main statements`,`Recognition is optional, disclosure is mandatory`,`Disclosure affects equity; recognition in special cases does not`,`Recognition refers to cash and asset transactions only`],0,null],
+[60,'CF','Recognition & Derecognition','60','mc',null,`Under what circumstances can an increase in an asset be recognized as income?`,[`Only when cash is received from the asset`,`When there is an increase in the carrying amount of the asset that meets recognition criteria`,`Only when the asset is sold`,`When the asset is pledged as collateral and the pledge is beneficial to the entity`],1,null],
+[61,'CF','Recognition & Derecognition','61','mc',null,`How does derecognition affect the statement of financial position?`,[`It removes the asset or liability from the statement when control or obligation ceases`,`It reclassifies the asset or liability within the same statement`,`It transfers the asset or liability to notes only`,`It defers recognition to a later reporting period`],0,null],
+[62,'CF','Recognition & Derecognition','62','mc',null,`How does control over an asset affect its recognition?`,[`Control is irrelevant if the asset has economic benefits`,`Control links the asset to the entity and is essential for recognition`,`Control is only relevant for liabilities, not assets`,`Control guarantees immediate recognition regardless of measurement`],1,null],
+[63,'CF','Recognition & Derecognition','63','mc',null,`In the context of liabilities, what does "present obligation" mean?`,[`A contingent liability`,`A possible future obligation dependent on external events`,`A duty to transfer economic resources that the entity cannot realistically avoid`,`An agreement that may or may not be enforceable by law`],2,null],
+[64,'CF','Recognition & Derecognition','64','mc',null,`What role does prudence play in faithful representation?`,[`Prudence encourages understatement of assets and income to avoid overstatement`,`Prudence justifies deliberate bias towards conservative estimates`,`Prudence eliminates the need for neutrality`,`Prudence only applies to liabilities, not assets`],0,`A caveat: strictly speaking, prudence is meant to support neutrality, not justify deliberate under/overstatement — but of these four options, this review pack marks (a) as correct.`],
+[65,'CF','Recognition & Derecognition','65','mc',null,`Which of the following best describes the concept of "unit of account"?`,[`The individual right or obligation to which recognition and measurement criteria are applied`,`The total amount of equity held by an entity`,`A single currency in which transactions are recorded`,`A separate financial statement for each asset`],0,null],
+[66,'CF','Recognition & Derecognition','66','mc',null,`Which of the following is the application of prudence?`,[`Recording a provision at P600,000 instead of P500,000 due to a 1% chance of the liability being at P600,000`,`Recording inventory at the lower of cost and market value`,`Overstating expenses due to overstated income`,`Recording financial information as complete as possible`],1,null],
+[67,'CF','Recognition & Derecognition','67','num',`Basbas Incorporated reports financial statements every month, at the start of every month. It reported the following inventory transactions:\n\nOctober 6: Purchased P1,000,000 of inventory FOB shipping point. Freight costs of P50,000 were incurred. The inventory arrived on October 7.\nOctober 12: Sold P600,000 of inventory on hand for P800,000.\nOctober 20: Purchased inventory worth P1,600,000 FOB destination point. It arrived on November 4.\nOctober 28: Sold inventory worth P85,000 FOB shipping point. It was shipped on November 2 and arrived at the buyer's address on November 3.\nNovember 2: Purchased inventory worth P1,000,000, incurring freight charges of P50,000.`,`How much is the inventory on October 31?`,null,450000,`Only the October 6 batch (P1,000,000 + P50,000 freight, since FOB shipping point puts freight and title on the buyer) less the P600,000 COGS from the October 12 sale counts. The October 20 purchase (FOB destination, not yet arrived) isn't owned yet, and the October 28 sale (FOB shipping point) hasn't shipped yet, so it's still on hand.`],
+[68,'CF','Recognition & Derecognition','68','num',`Basbas Incorporated reports financial statements every month, at the start of every month. It reported the following inventory transactions:\n\nOctober 6: Purchased P1,000,000 of inventory FOB shipping point. Freight costs of P50,000 were incurred. The inventory arrived on October 7.\nOctober 12: Sold P600,000 of inventory on hand for P800,000.\nOctober 20: Purchased inventory worth P1,600,000 FOB destination point. It arrived on November 4.\nOctober 28: Sold inventory worth P85,000 FOB shipping point. It was shipped on November 2 and arrived at the buyer's address on November 3.\nNovember 2: Purchased inventory worth P1,000,000, incurring freight charges of P50,000.`,`How much is the gross profit on October 31?`,null,200000,`Only the October 12 sale is recognized by October 31 (the FOB shipping point sale on October 28 doesn't ship until November 2). Revenue P800,000 − COGS P600,000 = P200,000.`],
+[69,'CF','Measurement','69','mc',null,`Which of the following best explains why fair value may be a more appropriate measurement basis for investments than historical cost?`,[`It reduces transaction costs associated with reporting`,`It reflects the original purchase intent of the investor`,`It aligns with the objective of determining the current worth of the investment`,`It always results in a lower valuation, ensuring conservative reporting`],2,null],
+[70,'CF','Measurement','70','mc',null,`Which factor is least likely to influence the selection of a measurement basis for a financial element?`,[`The nature and characteristics of the asset or liability`,`The reporting period used by the entity`,`The measurement uncertainty involved`,`The cost-benefit consideration in applying the measurement`],1,null],
+[71,'CF','Measurement','71','num',`An entity owns two assets:\n\nAsset A: Equipment initially purchased 2 years ago at P1,000,000. Its useful life is 100 years. Fair value P850,000. Predicted cash flows P1,200,000. Cost to buy the equipment at the current date: P1,800,000.\n\nAsset B: Land recently purchased at P16,000,000. Fair value P18,500,000. Predicted cash flows P12,000,000. Cost to buy the land at the current date: P17,500,000.`,`How much is the total assets assuming the historical cost perspective is used on both assets?`,null,16980000,`Asset A: P1,000,000 cost less 2 years' depreciation over a 100-year life (P20,000) = P980,000 carrying amount. Land is not depreciated: P16,000,000. Total: P16,980,000.`],
+[72,'CF','Measurement','72','num',`An entity owns two assets:\n\nAsset A: Equipment initially purchased 2 years ago at P1,000,000. Its useful life is 100 years. Fair value P850,000. Predicted cash flows P1,200,000. Cost to buy the equipment at the current date: P1,800,000.\n\nAsset B: Land recently purchased at P16,000,000. Fair value P18,500,000. Predicted cash flows P12,000,000. Cost to buy the land at the current date: P17,500,000.`,`How much is the total assets assuming the value in use perspective is used on both assets?`,null,13200000,`Sum of predicted cash flows: P1,200,000 + P12,000,000 = P13,200,000.`],
+[73,'CF','Measurement','73','num',`An entity owns two assets:\n\nAsset A: Equipment initially purchased 2 years ago at P1,000,000. Its useful life is 100 years. Fair value P850,000. Predicted cash flows P1,200,000. Cost to buy the equipment at the current date: P1,800,000.\n\nAsset B: Land recently purchased at P16,000,000. Fair value P18,500,000. Predicted cash flows P12,000,000. Cost to buy the land at the current date: P17,500,000.`,`How much is the total assets assuming the fair value measurement is used on both assets?`,null,19350000,`P850,000 + P18,500,000 = P19,350,000.`],
+[74,'CF','Measurement','74','num',`An entity owns two assets:\n\nAsset A: Equipment initially purchased 2 years ago at P1,000,000. Its useful life is 100 years. Fair value P850,000. Predicted cash flows P1,200,000. Cost to buy the equipment at the current date: P1,800,000.\n\nAsset B: Land recently purchased at P16,000,000. Fair value P18,500,000. Predicted cash flows P12,000,000. Cost to buy the land at the current date: P17,500,000.`,`How much is the total assets assuming the current cost perspective is used on both assets?`,null,19300000,`P1,800,000 + P17,500,000 = P19,300,000.`],
+[75,'CF','Measurement','75','mc',null,`Which measurement basis best reflects current market expectations about the value of an asset or liability?`,[`Historical cost`,`Current cost`,`Fair value`,`Value in use`],2,null],
+[76,'CF','Measurement','76','mc',null,`An asset that is expected to generate a stream of future cash flows over 10 years would most appropriately be measured using:`,[`Historical cost`,`Value in use`,`Fair value`,`Current cost`],1,null],
+[77,'CF','Measurement','77','mc',null,`Why might current cost be a more complex measurement basis than historical cost?`,[`It requires market comparables for valuation`,`It incorporates subjective assumptions into historical pricing`,`It uses cash flow models or market conditions as of the measurement date`,`It does not take into account changes in economic environment`],0,null],
+[78,'CF','Presentation & Disclosure','78','mc',null,`Which of the following scenarios best demonstrates effective communication in financial reporting?`,[`A company lists all its assets and liabilities alphabetically without any classification but ensures all values are accurate.`,`A company provides extensive disclosures in the notes but omits aggregation and classification in the main statements.`,`A company presents grouped and classified assets and liabilities by nature and function, ensuring that disclosures complement the presentation.`,`A company discloses each income and expense individually to avoid any possibility of information loss due to summarization.`],2,null],
+[79,'CF','Presentation & Disclosure','79','mc',null,`Which of the following best describes the relationship between classification and faithful representation?`,[`Classification improves faithful representation by increasing the amount of financial data provided.`,`Classification enhances faithful representation by ensuring similar items are grouped, thereby avoiding misleading aggregation.`,`Classification primarily serves a legal reporting purpose and does not influence faithful representation.`,`Classification reduces faithful representation by summarizing information and potentially hiding relevant details.`],1,null],
+[80,'CF','Presentation & Disclosure','80','mc',null,`A company holds a long-term investment and a short-term trade receivable. For proper presentation:`,[`Both should be classified together under "financial assets" with no separation required.`,`The investment should be reported in OCI, while the receivable should be recognized under equity.`,`The assets should be classified into current and non-current based on their expected realization period.`,`Both items should be aggregated to avoid confusion in presentation.`],2,null],
+[81,'CF','Presentation & Disclosure','81','mc',null,`In which case is offsetting considered appropriate under financial reporting standards?`,[`When two items belong to different entities but relate to a single contract.`,`When management believes it will improve the appearance of liquidity ratios.`,`When there is a legal right and intention to settle on a net basis.`,`When aggregation fails to present the financial position effectively.`],2,null],
+[82,'CF','Presentation & Disclosure','82','mc',null,`Why is it necessary to present equity components such as share capital and retained earnings separately in financial statements?`,[`Because doing so is required for regulatory compliance only.`,`Because these equity claims represent varying rights and obligations that may influence user decisions differently.`,`Because all equity items are taxed differently, requiring separate treatment.`,`Because these items are considered equity claims under financial reporting.`],1,null],
+[83,'CF','Presentation & Disclosure','83','mc',null,`Which statement regarding Other Comprehensive Income (OCI) is most accurate?`,[`OCI always consists of unrealized income that must never be reclassified to profit or loss.`,`Items in OCI cannot influence user decisions due to their non-operational nature.`,`OCI items can be reclassified to profit or loss when doing so improves the relevance or faithful representation of information.`,`OCI is primarily used for internal reporting purposes and is not part of external financial statements.`],2,null],
+[84,'CF','Presentation & Disclosure','84','mc',null,`Which of the following best explains the purpose of aggregation in financial statements?`,[`To reduce the size of financial reports by hiding less important data.`,`To simplify accounting procedures by ignoring specific transaction details.`,`To summarize information with shared characteristics to enhance understandability and reduce information overload.`,`To eliminate the need for additional notes to financial statements.`],2,null],
+[85,'CF','Presentation & Disclosure','85','mc',null,`A company aggregates similar types of revenue streams under a single line item in the income statement. However, each stream differs in terms of risk and time to realization. What is the most appropriate reporting approach?`,[`Continue aggregating for simplicity.`,`Disaggregate the streams.`,`Classify and disclose each stream separately in the notes to reflect their different characteristics and improve decision-usefulness.`,`Report them in OCI since their nature is not directly tied to current operations.`],2,null],
+[86,'CF','Presentation & Disclosure','86','mc',null,`A financial statement aggregates various employee-related expenses under a single "Personnel Costs" item. This method:`,[`Always violates the requirement for faithful representation.`,`Enhances relevance and understandability as long as the aggregated items share economic characteristics`,`Eliminates the need for disclosures in the notes.`,`Suggests that offsetting is required to ensure the report is balanced.`],1,null],
+[87,'CF','Presentation & Disclosure','87','tf',null,`Offsetting is an entity combining unrelated assets and liabilities into a single amount to simplify the financial statement presentation.`,[`True`,`False`],1,`Offsetting is only appropriate when a legal right and intention to settle net exist — not just for convenience.`],
+[88,'CF','Presentation & Disclosure','88','tf',null,`Other Comprehensive Income (OCI) items can sometimes be reclassified to profit or loss if such reclassification would provide more relevant or faithfully representative information.`,[`True`,`False`],0,null],
+[89,'CF','Presentation & Disclosure','89','tf',null,`Aggregation in financial statements is discouraged because it reduces the level of detail provided to users.`,[`True`,`False`],1,`Aggregation is encouraged when it groups items that share characteristics — it improves understandability rather than harming it.`],
+[90,'CF','Presentation & Disclosure','90','num',`On January 1, Chicken Co. acquired 15,000 shares of an FVOCI investment for P20/share. On March 20, the value rose to P24/share. The shares were then subsequently sold.`,`How much is the value of the shares (as of March 20)?`,null,360000,`15,000 shares × P24 = P360,000.`],
+[91,'CF','Presentation & Disclosure','91','num',`On January 1, Chicken Co. acquired 15,000 shares of an FVOCI investment for P20/share. On March 20, the value rose to P24/share. The shares were then subsequently sold.`,`How much is the debit to OCI and credit to P/L from selling the shares?`,null,60000,`Cumulative unrealized gain: 15,000 × (P24 − P20) = P60,000.`],
+[92,'CF','Capital Maintenance','92','mc',null,`Which of the following best describes the difference between financial capital maintenance and physical capital maintenance?`,[`Financial capital maintenance considers the value of productive capacity, while physical capital maintenance considers monetary gains.`,`Physical capital maintenance focuses on changes in equity regardless of physical output.`,`Financial capital maintenance regards profit as an increase in net assets, while physical capital maintenance recognizes profit only if the entity's ability to produce goods or services has improved, excluding monetary distributions or contributions.`,`Physical capital maintenance allows restatements of equity for inflation adjustments under the historical cost model.`],2,null],
+[93,'CF','Capital Maintenance','93','tf',null,`An increase in the productive capacity of an entity with no change in monetary assets or liabilities qualifies as a profit under the financial capital maintenance concept.`,[`True`,`False`],1,`With no change in monetary net assets, there's no profit under the financial concept — it only looks at net assets in money terms.`],
+[94,'CF','Capital Maintenance','94','tf',null,`An increase in the productive capacity of an entity with no change in monetary assets or liabilities qualifies as a profit under the physical capital maintenance concept.`,[`True`,`False`],0,null],
+[95,'CF','Capital Maintenance','95','mc',null,`Under the physical concept of capital maintenance, which of the following statements is most accurate?`,[`The entity may recognize profit even if equity has decreased, provided its production capacity has increased.`,`Profit is calculated by determining the monetary values of equity at the beginning and end of the reporting period.`,`Physical capital maintenance disregards productive capacity as it focuses on net income.`,`Entities must use the historical cost basis of measurement to apply the physical capital concept correctly.`],0,null],
+[96,'CF','Capital Maintenance','96','tf',null,`The physical capital maintenance concept is required to be used by all public companies under IFRS when measuring capital and profit.`,[`True`,`False`],1,`Most entities adopt the financial concept of capital by default; physical capital maintenance is not a mandatory requirement.`],
+[97,'CF','Capital Maintenance','97','tf',null,`Restatements of assets and liabilities that are made for the purpose of capital maintenance are included in equity as capital maintenance adjustments, not affecting current period profit or loss.`,[`True`,`False`],0,null],
+[98,'CF','Capital Maintenance','98','num',`BASBAS Co. reported an increase in equity of P500,000, while its productive efficiency increased, allowing the company to produce 5,000 units each day at a cost of P0.05 each.`,`Under the financial capital maintenance concept, how much is the net income?`,null,500000,`Financial capital maintenance simply takes the full increase in net assets/equity as profit.`],
+[99,'CF','Capital Maintenance','99','num',`BASBAS Co. reported an increase in equity of P500,000, while its productive efficiency increased, allowing the company to produce 5,000 units each day at a cost of P0.05 each.`,`Under the physical capital maintenance concept, how much is the net income?`,null,91250,`Physical capital maintenance values the year's productive capacity at current cost: 5,000 units × P0.05 × 365 days = P91,250.`],
+[100,'18','Theories','1','mc',null,`What is the main objective of IFRS 18?`,[`To standardize taxation rules globally`,`To enhance the audit process`,`To provide guidance on the presentation and disclosure of financial statements`,`To define how to calculate net profit`],2,null],
+[101,'18','Theories','2','tf',null,`IFRS 18 is not an accounting standard as it was superseded by IAS 1.`,[`True`,`False`],1,`It's the opposite — IFRS 18 is the newer standard that supersedes IAS 1's presentation requirements.`],
+[102,'18','Theories','3','mc',null,`Which of these is considered a financing activity under the statement of profit or loss?`,[`Sales revenue`,`Amortization of bonds payable`,`Gains from investments in associate`,`Payment of income tax`],1,null],
+[103,'18','Theories','4','mc',null,`Which of the following must be disclosed if a company changes its reporting period?`,[`New tax laws`,`Auditor's opinion`,`Reason for the change`,`Market trends`],2,null],
+[104,'18','Theories','5','tf',null,`Investments at fair value through profit or loss are sometimes a non-current asset.`,[`True`,`False`],1,null],
+[105,'18','Theories','6','mc',null,`An entity's reporting period finishes on December 31, but it has a bond payable due on March 1 the year after, though it can defer settlement until October 1. The bonds payable is:`,[`Current`,`Non-current`],0,null],
+[106,'18','Theories','7','mc',null,`The primary statements are presented with:`,[`Equal understanding`,`Equal importance`,`Equal work on the statements`,`Equal formatting`],1,null],
+[107,'18','Theories','8','mc',null,`Which of the following is not a necessary disclosure on the primary financial statements?`,[`The rounding basis`,`The presentation currency`,`The materiality level`,`If the entity is a parent or subsidiary`],2,null],
+[108,'18','Theories','9','tf',null,`Entities with net equity of P1,000,000,000 are required to round to the thousands place.`,[`True`,`False`],1,`Rounding level is a policy choice the entity discloses — it isn't mandated by the size of net equity.`],
+[109,'18','Theories','10','mc',null,`The inventory of an entity which takes 16 months or more to go through an operating cycle is considered:`,[`Current`,`Non-current`],0,`Assets are current if realized within the entity's normal operating cycle, even when that cycle runs longer than 12 months.`],
+[110,'18','Theories','11','tf',null,`Presentation based on liquidity is permitted.`,[`True`,`False`],0,null],
+[111,'18','Theories','12','tf',null,`Separation of current and non-current assets is not always required.`,[`True`,`False`],0,`When a liquidity-based presentation is more relevant and reliable, the current/non-current split can be skipped.`],
+[112,'18','Theories','13','mc',null,`What must be disclosed in the notes if not disclosed elsewhere, according to IFRS 18?`,[`Budget targets`,`Stock prices`,`Domicile and legal form of the entity`,`Annual growth rate`],2,null],
+[113,'18','Theories','14','mc',null,`Which of the following is part of other comprehensive income (OCI)?`,[`Cost of goods sold`,`Gains from foreign exchange`,`Gains on current investments`,`Amortization of debt security measured at FAAC`],1,null],
+[114,'18','Theories','15','mc',null,`Financial statements are required to be prepared at least:`,[`Every 365 days`,`Every 180 days`,`Every 720 days`,`Every 31 days`],0,null],
+[115,'18','Theories','16','mc',null,`Which of the following best describes the principle of aggregation under IFRS 18?`,[`Grouping items together based on size of monetary value`,`Grouping items based on similar characteristics to enhance faithful representation`,`Combining all income and expense items into one summary line`,`Presenting assets and liabilities without distinguishing their nature`],1,null],
+[116,'18','Theories','17','mc',null,`Under IFRS 18, what is the main purpose of financial statements?`,[`To comply with tax regulations`,`To provide information to the government`,`To provide relevant and faithfully represented financial information to users`,`To internally forecast future business trends`],2,null],
+[117,'18','Theories','18','mc',null,`What does IFRS 18 say about the prominence of financial statements?`,[`The statement of financial position is most important`,`Notes are less important than statements`,`All financial statements are given equal prominence`,`The cash flow statement is in some cases optional`],2,null],
+[118,'18','Theories','19','tf',null,`In a change of policy, a third statement of financial position has to be made.`,[`True`,`False`],0,`A retrospective policy change requires a statement of financial position as at the start of the earliest comparative period presented.`],
+[119,'18','Theories','20','tf',null,`A change in tax rates would require a third statement of financial position to be made.`,[`True`,`False`],1,`A tax-rate change is applied prospectively — it doesn't restate prior periods, so no third statement of financial position is triggered.`],
+[120,'18','Theories','21','num',null,`How many of the following items are part of the statement of cash flows? (Give a number from 0 to 6)\n\nI. Operating activities\nII. Financing activities\nIII. Investing activities\nIV. Tax activities\nV. Profit margin\nVI. Financial ratios`,null,3,`The statement of cash flows is organized into operating, financing, and investing activities. Tax activities, profit margin, and financial ratios aren't cash flow categories.`],
+[121,'18','Theories','22','mc',null,`The notes of financial statements:`,[`Give information about competitors`,`Give a general economic analysis`,`Material information that supplements the primary statements`,`Forecasted financials`],2,null],
+[122,'18','Theories','23','mc',null,`What is the main objective of aggregation:`,[`Understanding`,`Cost-benefit`,`Faithful representation`,`Comparability`],2,null],
+[123,'18','Theories','24','mc',null,`What is normally part of an MPM (management-defined performance measure)?`,[`Total assets`,`Custom subtotal of income/expenses used in public reports`,`Government-set tax rate`,`Legal reserves`],1,null],
+[124,'18','Situational','S1','open',null,`Due to a change in an accounting standard regarding inventory measurement, Tung Sahur Corporation changes its accounting policy in 2025, which affects the financial data of previous periods. What must the company do in accordance with IFRS 18?`,null,null,`It must present an additional statement of financial position as at the beginning of the preceding period — a third statement of financial position — since the retrospective policy change alters previously reported financial information.`],
+[125,'18','Situational','S2','open',null,`Basbas Incorporated has 20,000 preference shares at a par value of P100, but it received P120 per share. What are the 3 disclosures it must make according to IFRS 18? Compute the increase in equity as well.`,null,null,`It should disclose, for each class of shares: (1) the number of shares authorized and issued, (2) a description of each reserve within equity, and (3) the details/rights attaching to that class — shown in the statement of financial position, statement of changes in equity, or the notes. Increase in equity: P1,200,000.`],
+[126,'18','Situational','S3','open',null,`How should a company present cash and cash equivalents in the statement of financial position?`,null,null,`As an aggregated line item within the current assets portion of a classified statement of financial position.`],
+[127,'18','Problem Solving','P1','num',`BASBAS CO. has the following accounts as of December 31:\n\nTrade accounts payable — P1,200,000\nTrade accounts receivable — P2,200,000\nFinancial liability at FVPL — P820,000\nFinancial liability at amortized cost, due in 3 years — P70,400\n6% loans payable due in 2 years, acquired October 1 — P1,150,000\n12% loans payable due in 6 months, acquired October 30 — P1,200\nUnearned rent — P855,000\nPrepaid rent — P340,000\nCash — P12,550,000\nInventory — P1,600,000\nInventory in segment B, wherein operating cycle is 15 months — P180,000\nAccrued utilities payable — P10,000`,`How much is the total current liabilities?`,null,2903474,`Includes trade payables, the FVPL liability (held for trading), the loan due within 6 months, unearned rent, accrued utilities payable, and the interest accrued to date on both interest-bearing loans.`],
+[128,'18','Problem Solving','P2','num',`BASBAS CO. has the following accounts as of December 31:\n\nTrade accounts payable — P1,200,000\nTrade accounts receivable — P2,200,000\nFinancial liability at FVPL — P820,000\nFinancial liability at amortized cost, due in 3 years — P70,400\n6% loans payable due in 2 years, acquired October 1 — P1,150,000\n12% loans payable due in 6 months, acquired October 30 — P1,200\nUnearned rent — P855,000\nPrepaid rent — P340,000\nCash — P12,550,000\nInventory — P1,600,000\nInventory in segment B, wherein operating cycle is 15 months — P180,000\nAccrued utilities payable — P10,000`,`How much is the total non-current liabilities?`,null,1220400,`The amortized-cost liability due in 3 years (P70,400) plus the principal of the 6% loan due in 2 years (P1,150,000).`],
+[129,'18','Problem Solving','P3','num',`BASBAS CO. has the following accounts as of December 31:\n\nTrade accounts payable — P1,200,000\nTrade accounts receivable — P2,200,000\nFinancial liability at FVPL — P820,000\nFinancial liability at amortized cost, due in 3 years — P70,400\n6% loans payable due in 2 years, acquired October 1 — P1,150,000\n12% loans payable due in 6 months, acquired October 30 — P1,200\nUnearned rent — P855,000\nPrepaid rent — P340,000\nCash — P12,550,000\nInventory — P1,600,000\nInventory in segment B, wherein operating cycle is 15 months — P180,000\nAccrued utilities payable — P10,000`,`How much is the total current assets?`,null,14670000,`Cash, prepaid rent, and both inventory pools (segment B still counts as current since its 15-month cycle is within its own normal operating cycle).`],
+[130,'18','Problem Solving','P4','num',`BASBAS CO. has the following accounts as of December 31 (beginning inventory on January 1 was P0):\n\nSales — P10,000,000\nSales discounts — P230,000\nSales returns and allowances — P85,000\nNet cost of purchases (60% of purchases are used) — P9,000,000\nOperating expenses — P1,100,000\nOperating income — P300,000\nInvestment income from FVPL investment — P80,000\nInvestment income from investment in associate — P800,000\nInvestment income from joint venture — P85,000\nInterest expense on 3% P500,000 loan acquired on October 1 — (to compute)\nInterest expense on 6% P3,000,000 loan acquired on January 1 — P180,000\nTax rate — 30%`,`How much is the net income from operating activities?`,null,3405000,`Sort each line into IFRS 18's operating, investing, and financing categories: revenue and cost of sales, operating expenses, and the FVPL investment income (held for trading) all fall under operating.`],
+[131,'18','Problem Solving','P5','num',`BASBAS CO. has the following accounts as of December 31 (beginning inventory on January 1 was P0):\n\nSales — P10,000,000\nSales discounts — P230,000\nSales returns and allowances — P85,000\nNet cost of purchases (60% of purchases are used) — P9,000,000\nOperating expenses — P1,100,000\nOperating income — P300,000\nInvestment income from FVPL investment — P80,000\nInvestment income from investment in associate — P800,000\nInvestment income from joint venture — P85,000\nInterest expense on 3% P500,000 loan acquired on October 1 — (to compute)\nInterest expense on 6% P3,000,000 loan acquired on January 1 — P180,000\nTax rate — 30%`,`How much is the net income from investing activities?`,null,885000,`Investing activities cover income from associates and joint ventures, as long as the investment is not a current asset: P800,000 + P85,000 = P885,000.`],
+[132,'18','Problem Solving','P6','num',`BASBAS CO. has the following accounts as of December 31 (beginning inventory on January 1 was P0):\n\nSales — P10,000,000\nSales discounts — P230,000\nSales returns and allowances — P85,000\nNet cost of purchases (60% of purchases are used) — P9,000,000\nOperating expenses — P1,100,000\nOperating income — P300,000\nInvestment income from FVPL investment — P80,000\nInvestment income from investment in associate — P800,000\nInvestment income from joint venture — P85,000\nInterest expense on 3% P500,000 loan acquired on October 1 — (to compute)\nInterest expense on 6% P3,000,000 loan acquired on January 1 — P180,000\nTax rate — 30%`,`How much is the net income from financing activities?`,null,-183750,`Interest expense on the 6% loan (P180,000, full year) plus the 3% loan (P500,000 × 3% × 3/12 = P3,750) = P183,750 total expense — shown as a negative financing figure.`],
+[133,'18','Problem Solving','P7','num',`BASBAS CO. had the following accounts as of December 31:\n\nCash on hand — P80,000\nCash in bank — P2,000,000\nMoney order — P350,000\nPetty cash fund (P7,000 of which are receipts) — P14,500\nMoney market acquired on November 30, due on February 28 — P1,100,000\nMoney market acquired on October 31, due on February 28 — P70,000\nReceivable due in 3 years — P5,000,000\nUnamortized discount on receivable — P500,000\nFVPL debt security — P30,000\nPlant, property, and equipment — P1,000,000\nAccumulated depreciation on plant, property, and equipment — P200,000\nInventory — P70,000\nInvestment property held to be rented out — P12,000,000\nBiological assets (cows held for breeding) — P650,000\nLoans due in 3 months — P700,000\nLoans due in 3 years — P1,400,000\nAccrued expenses — P280,000\nShare capital — (plug)\nShare premium — P800,000\nRetained earnings — P1,000,000`,`How much is the total current assets?`,null,3707500,`Cash on hand, cash in bank, money order, the usable part of the petty cash fund, both money market placements (due within 12 months), and inventory.`],
+[134,'18','Problem Solving','P8','num',`BASBAS CO. had the following accounts as of December 31:\n\nCash on hand — P80,000\nCash in bank — P2,000,000\nMoney order — P350,000\nPetty cash fund (P7,000 of which are receipts) — P14,500\nMoney market acquired on November 30, due on February 28 — P1,100,000\nMoney market acquired on October 31, due on February 28 — P70,000\nReceivable due in 3 years — P5,000,000\nUnamortized discount on receivable — P500,000\nFVPL debt security — P30,000\nPlant, property, and equipment — P1,000,000\nAccumulated depreciation on plant, property, and equipment — P200,000\nInventory — P70,000\nInvestment property held to be rented out — P12,000,000\nBiological assets (cows held for breeding) — P650,000\nLoans due in 3 months — P700,000\nLoans due in 3 years — P1,400,000\nAccrued expenses — P280,000\nShare capital — (plug)\nShare premium — P800,000\nRetained earnings — P1,000,000`,`How much is the total non-current assets?`,null,17950000,`The receivable due in 3 years (net of the unamortized discount), plant, property and equipment (net of accumulated depreciation), investment property, and biological assets.`],
+[135,'18','Problem Solving','P9','num',`BASBAS CO. had the following accounts as of December 31:\n\nCash on hand — P80,000\nCash in bank — P2,000,000\nMoney order — P350,000\nPetty cash fund (P7,000 of which are receipts) — P14,500\nMoney market acquired on November 30, due on February 28 — P1,100,000\nMoney market acquired on October 31, due on February 28 — P70,000\nReceivable due in 3 years — P5,000,000\nUnamortized discount on receivable — P500,000\nFVPL debt security — P30,000\nPlant, property, and equipment — P1,000,000\nAccumulated depreciation on plant, property, and equipment — P200,000\nInventory — P70,000\nInvestment property held to be rented out — P12,000,000\nBiological assets (cows held for breeding) — P650,000\nLoans due in 3 months — P700,000\nLoans due in 3 years — P1,400,000\nAccrued expenses — P280,000\nShare capital — (plug)\nShare premium — P800,000\nRetained earnings — P1,000,000`,`How much is the total liabilities?`,null,2380000,`Loans due in 3 months, loans due in 3 years, and accrued expenses.`]
+];
+
+const questions = RAW.map(r=>{ const o={}; FIELDS.forEach((f,i)=>o[f]=r[i]); return o; });
+
+const state = {
+  screen:'setup',
+  topic:'all',
+  section:'all',
+  type:'all',
+  shuffleOn:true,
+  pool:[],
+  idx:0,
+  score:{correct:0, wrong:0},
+  history:{}
+};
+
+function shuffleArr(a){ const b=a.slice(); for(let i=b.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]]; } return b; }
+
+function sectionsFor(topic){
+  const order = [];
+  questions.forEach(q=>{
+    if((topic==='all'||q.topic===topic) && !order.includes(q.section)) order.push(q.section);
+  });
+  return order;
+}
+
+function fmtPeso(n){
+  if(n===null||n===undefined) return '';
+  const neg = n<0; const v = Math.abs(n).toLocaleString();
+  return neg? `(P${v})` : `P${v}`;
+}
+
+function parseNum(str){
+  if(!str) return NaN;
+  let s = str.trim();
+  const neg = /^\(.*\)$/.test(s) || s.startsWith('-');
+  s = s.replace(/[(),P₱\s]/gi,'').replace(/^-/,'');
+  const v = parseFloat(s);
+  if(isNaN(v)) return NaN;
+  return neg? -v : v;
+}
+
+function matchesFilter(q){
+  return (state.topic==='all'||q.topic===state.topic) &&
+         (state.section==='all'||q.section===state.section) &&
+         (state.type==='all'||q.type===state.type);
+}
+
+function buildPool(){
+  let list = questions.filter(matchesFilter);
+  if(state.shuffleOn) list = shuffleArr(list);
+  state.pool = list.map(q=>q.id);
+  state.idx = 0;
+  state.score = {correct:0, wrong:0};
+  state.history = {};
+}
+
+const view = document.getElementById('view');
+const tallyEl = document.getElementById('tally');
+
+function renderTally(){
+  if(state.screen!=='quiz'){ tallyEl.style.visibility='hidden'; return; }
+  tallyEl.style.visibility='visible';
+  tallyEl.innerHTML = `<div class="col debit"><span class="label">Correct</span>${state.score.correct}</div><div class="col credit"><span class="label">Incorrect</span>${state.score.wrong}</div>`;
+}
+
+function go(screen){ state.screen=screen; render(); }
+
+function render(){
+  renderTally();
+  if(state.screen==='setup') return renderSetup();
+  if(state.screen==='quiz') return renderQuiz();
+  if(state.screen==='results') return renderResults();
+}
+
+function renderSetup(){
+  const topics = [['all','All topics'],['CF','Conceptual Framework'],['18','IFRS 18']];
+  const secs = sectionsFor(state.topic);
+  view.innerHTML = `
+    <section class="setup">
+      <p class="eyebrow">Debit knowledge, credit confidence</p>
+      <h2>Set up your practice session</h2>
+      <p class="lede">135 questions pulled from the Accounting Pool review packs on the Conceptual Framework and IFRS 18 — multiple choice, true/false, computations, and reasoning.</p>
+      <div class="control-grid">
+        <label class="control">Topic
+          <select id="f-topic">${topics.map(([v,l])=>`<option value="${v}" ${state.topic===v?'selected':''}>${l}</option>`).join('')}</select>
+        </label>
+        <label class="control">Section
+          <select id="f-section">
+            <option value="all" ${state.section==='all'?'selected':''}>All sections</option>
+            ${secs.map(s=>`<option value="${s}" ${state.section===s?'selected':''}>${s}</option>`).join('')}
+          </select>
+        </label>
+        <label class="control">Question type
+          <select id="f-type">
+            <option value="all" ${state.type==='all'?'selected':''}>All types</option>
+            <option value="mc" ${state.type==='mc'?'selected':''}>Multiple choice</option>
+            <option value="tf" ${state.type==='tf'?'selected':''}>True / False</option>
+            <option value="num" ${state.type==='num'?'selected':''}>Computation</option>
+            <option value="open" ${state.type==='open'?'selected':''}>Reasoning / situational</option>
+          </select>
+        </label>
+        <label class="control switch-control">Shuffle order
+          <button id="f-shuffle" class="switch ${state.shuffleOn?'on':''}" type="button" aria-pressed="${state.shuffleOn}">${state.shuffleOn?'On':'Off'}</button>
+        </label>
+      </div>
+      <div class="count-line" id="count-line"></div>
+      <div class="cta-row">
+        <button class="btn btn-primary" id="start-quiz">Start practice</button>
+      </div>
+    </section>
+  `;
+  updateCount();
+  document.getElementById('f-topic').onchange = e=>{ state.topic=e.target.value; state.section='all'; renderSetup(); };
+  document.getElementById('f-section').onchange = e=>{ state.section=e.target.value; updateCount(); };
+  document.getElementById('f-type').onchange = e=>{ state.type=e.target.value; updateCount(); };
+  document.getElementById('f-shuffle').onclick = ()=>{ state.shuffleOn=!state.shuffleOn; renderSetup(); };
+  document.getElementById('start-quiz').onclick = ()=>{
+    buildPool();
+    if(state.pool.length===0) return;
+    go('quiz');
+  };
+}
+
+function updateCount(){
+  const n = questions.filter(matchesFilter).length;
+  const line = document.getElementById('count-line');
+  if(line) line.textContent = n===0 ? 'No questions match these filters — widen your filters.' : (n+' question'+(n===1?'':'s')+' in this set.');
+}
+
+function currentQ(){ return questions.find(q=>q.id===state.pool[state.idx]); }
+
+function renderQuiz(){
+  const q = currentQ();
+  const total = state.pool.length;
+  const pct = Math.round((state.idx/total)*100);
+  let body='';
+  if(q.type==='mc'||q.type==='tf'){
+    body = `<div class="options" id="options">${q.options.map((opt,i)=>`<button class="opt" data-i="${i}"><span class="opt-letter">${String.fromCharCode(65+i)}</span><span>${opt}</span></button>`).join('')}</div>
+      <div class="feedback" id="feedback"></div>
+      <div class="actions"><button class="btn btn-ghost" id="skip-btn">Skip</button><button class="btn btn-primary" id="next-btn" disabled>Next question</button></div>`;
+  } else if(q.type==='num'){
+    body = `<div class="num-row"><input type="text" id="num-input" placeholder="e.g. P285,776" autocomplete="off"><button class="btn btn-primary" id="check-btn">Check</button></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="actions"><button class="btn btn-ghost" id="skip-btn">Skip</button><button class="btn btn-primary" id="next-btn" disabled>Next question</button></div>`;
+  } else {
+    body = `<div class="actions" style="margin-top:6px;"><button class="btn btn-primary" id="reveal-btn">Reveal model answer</button></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="actions" id="self-grade" style="display:none;"><span class="self-grade-label">Did you get it right?</span><button class="btn btn-ghost" id="self-wrong">Not quite</button><button class="btn btn-primary" id="self-right">Yes</button></div>
+      <div class="actions"><button class="btn btn-ghost" id="skip-btn">Skip</button><button class="btn btn-primary" id="next-btn" disabled>Next question</button></div>`;
+  }
+
+  view.innerHTML = `
+    <section class="quiz">
+      <div class="progress-row">
+        <span class="progress-label">Question ${state.idx+1} of ${total}</span>
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+      </div>
+      <article class="question-card">
+        <div class="q-tag">${q.topic==='CF'?'Conceptual Framework':'IFRS 18'} · ${q.section} · No. ${q.num}</div>
+        ${q.context?`<pre class="ledger-sheet">${q.context}</pre>`:''}
+        <h3 class="q-prompt">${q.prompt}</h3>
+        ${body}
+      </article>
+    </section>
+  `;
+
+  if(q.type==='mc'||q.type==='tf'){
+    document.querySelectorAll('.opt').forEach(btn=>{ btn.onclick = ()=>selectOption(q, parseInt(btn.dataset.i)); });
+  } else if(q.type==='num'){
+    document.getElementById('check-btn').onclick = ()=>checkNumAnswer(q);
+    document.getElementById('num-input').addEventListener('keydown', e=>{ if(e.key==='Enter') checkNumAnswer(q); });
+  } else {
+    document.getElementById('reveal-btn').onclick = ()=>revealOpen(q);
+  }
+  document.getElementById('skip-btn').onclick = ()=>{ recordAnswer(q,null,false,true); advance(); };
+  document.getElementById('next-btn').onclick = advance;
+}
+
+function lockOptions(){ document.querySelectorAll('.opt').forEach(b=>b.disabled=true); }
+
+function selectOption(q, i){
+  if(state.history[q.id]) return;
+  lockOptions();
+  const correct = i===q.answer;
+  document.querySelectorAll('.opt').forEach((b,bi)=>{
+    if(bi===q.answer) b.classList.add('correct');
+    if(bi===i && !correct) b.classList.add('wrong');
+  });
+  showFeedback(correct, q, q.options[q.answer]);
+  recordAnswer(q, q.options[i], correct);
+}
+
+function checkNumAnswer(q){
+  if(state.history[q.id]) return;
+  const input = document.getElementById('num-input');
+  const val = parseNum(input.value);
+  const correct = !isNaN(val) && Math.abs(val-q.answer)<=0.5;
+  input.disabled = true;
+  document.getElementById('check-btn').disabled = true;
+  showFeedback(correct, q, fmtPeso(q.answer));
+  recordAnswer(q, input.value, correct);
+}
+
+function revealOpen(q){
+  document.getElementById('reveal-btn').disabled = true;
+  document.getElementById('feedback').innerHTML = `<div class="fb fb-info"><strong>Model answer</strong><p>${q.explain}</p></div>`;
+  document.getElementById('self-grade').style.display='flex';
+  document.getElementById('self-right').onclick = ()=>{ recordAnswer(q,'Marked correct',true); finishSelfGrade(); };
+  document.getElementById('self-wrong').onclick = ()=>{ recordAnswer(q,'Marked incorrect',false); finishSelfGrade(); };
+}
+function finishSelfGrade(){
+  document.getElementById('self-grade').style.display='none';
+  document.getElementById('next-btn').disabled=false;
+}
+
+function showFeedback(correct, q, correctDisplay){
+  const fb = document.getElementById('feedback');
+  fb.innerHTML = `<div class="fb ${correct?'fb-correct':'fb-wrong'}"><strong>${correct?'Correct.':'Not quite.'}</strong>${!correct?`<p>Correct answer: ${correctDisplay}</p>`:''}${q.explain?`<p class="fb-explain">${q.explain}</p>`:''}</div>`;
+  document.getElementById('next-btn').disabled=false;
+}
+
+function recordAnswer(q, given, correct, skipped){
+  if(state.history[q.id]) return;
+  state.history[q.id] = {given, correct:!!correct, skipped:!!skipped};
+  if(!skipped){ correct? state.score.correct++ : state.score.wrong++; }
+  renderTally();
+}
+
+function advance(){
+  if(state.idx < state.pool.length-1){ state.idx++; renderQuiz(); }
+  else { go('results'); }
+}
+
+function renderResults(){
+  const total = state.pool.length;
+  const answered = Object.keys(state.history).filter(id=>!state.history[id].skipped).length;
+  const pct = answered? Math.round((state.score.correct/answered)*100) : 0;
+  const missed = state.pool.filter(id=> state.history[id] && !state.history[id].correct && !state.history[id].skipped);
+  view.innerHTML = `
+    <section class="results">
+      <p class="eyebrow">Session closed</p>
+      <h2>Trial balance</h2>
+      <div class="tacct big"><div class="col debit"><span class="label">Correct</span>${state.score.correct}</div><div class="col credit"><span class="label">Incorrect</span>${state.score.wrong}</div></div>
+      <p class="score-line">${answered} of ${total} answered · ${pct}% accuracy</p>
+      ${missed.length? `<div class="missed"><h3>Review these ${missed.length}</h3>${missed.map(id=>{
+        const q=questions.find(x=>x.id===id); const h=state.history[id];
+        const correctText = q.type==='num'? fmtPeso(q.answer) : (q.type==='open'? 'See reasoning below' : q.options[q.answer]);
+        return `<div class="missed-item">
+            <div class="q-tag">${q.topic==='CF'?'Conceptual Framework':'IFRS 18'} · ${q.section} · No. ${q.num}</div>
+            <p class="missed-prompt">${q.prompt}</p>
+            <p class="missed-your">Your answer: ${h.given!==null && h.given!==undefined && h.given!==''? h.given : '—'}</p>
+            <p class="missed-correct">Correct: ${correctText}</p>
+            ${q.explain?`<p class="missed-explain">${q.explain}</p>`:''}
+          </div>`;
+      }).join('')}</div>` : ''}
+      <div class="cta-row">
+        ${missed.length? `<button class="btn btn-primary" id="retry-missed">Retry missed only</button>` : ''}
+        <button class="btn btn-ghost" id="new-session">New session</button>
+      </div>
+    </section>
+  `;
+  if(missed.length){
+    document.getElementById('retry-missed').onclick = ()=>{
+      state.pool = state.shuffleOn? shuffleArr(missed) : missed.slice();
+      state.idx=0; state.score={correct:0,wrong:0}; state.history={};
+      go('quiz');
+    };
+  }
+  document.getElementById('new-session').onclick = ()=> go('setup');
+}
+
+render();
+</script>
+</body>
+</html>
